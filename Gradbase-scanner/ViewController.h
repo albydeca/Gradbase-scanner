@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import <QRCodeReaderDelegate.h>
+#import <WebKit/WebKit.h>
 
 @interface ViewController : UIViewController
-
 
 @end
 
