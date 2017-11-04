@@ -11,7 +11,7 @@
 #import <QRCodeReaderViewController.h>
 #import <QRCodeReader.h>
 #import <SafariServices/SafariServices.h>
-@interface ViewController ()<QRCodeReaderDelegate, UIAlertViewDelegate, UIWebViewDelegate>
+@interface ViewController ()<QRCodeReaderDelegate, UIAlertViewDelegate, SFSafariViewControllerDelegate>
 
 @end
 
@@ -56,11 +56,14 @@ bool appeared = false;
         NSString *host = [url host];
         if([host containsString:@"www.gradba.se"]) {
 //            WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
-            UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
-            webView.delegate = self;
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-            [webView loadRequest:urlRequest];
-            [self.view addSubview:webView];
+//            UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+//            webView.delegate = self;
+//            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+//            [webView loadRequest:urlRequest];
+//            [self.view addSubview:webView];
+            SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
+            svc.delegate = self;
+            [self presentViewController:svc animated:YES completion:nil];
             
         } else {
             NSLog(result);
@@ -81,16 +84,22 @@ bool appeared = false;
 {
     
 }
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button addTarget:self
-               action:@selector(close:)
-     forControlEvents:UIControlEventTouchDown];
-    [button setTitle:@"Close" forState:UIControlStateNormal];
-    button.frame = CGRectMake(20, 20, 109, 60);
-    [button addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
-    [webView addSubview:button];
+//-(void)webViewDidFinishLoad:(UIWebView *)webView
+//{
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [button addTarget:self
+//               action:@selector(close:)
+//     forControlEvents:UIControlEventTouchDown];
+//    [button setTitle:@"Close" forState:UIControlStateNormal];
+//    button.frame = CGRectMake(20, 20, 109, 60);
+//    [button addTarget:self action:@selector(close:) forControlEvents:UIControlEventTouchUpInside];
+//    [webView addSubview:button];
+//}
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+    [self dismissViewControllerAnimated:true completion:nil];
+    [self setUpQrReader];
 }
+
 @end
 
